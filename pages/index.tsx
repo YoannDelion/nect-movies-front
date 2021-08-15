@@ -1,9 +1,11 @@
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
 import axios from 'axios'
+import { getSession, signIn, signOut, useSession } from 'next-auth/client'
 
 
 const Home = ({ movies }: any) => {
+  const [session, loading] = useSession()
 
   return (
     <>
@@ -26,7 +28,20 @@ const Home = ({ movies }: any) => {
           </div>
         </main>
 
-        <div className='bg-gray-50  h-screen border-l p-8'></div>
+        <div className='bg-gray-50  h-screen border-l p-8'>
+          {!session ? <>
+            Not signed in <br />
+            <button onClick={(e) => {
+              e.preventDefault()
+              signIn('credentials', { username: 'yoann', password: '123456' })
+            }}>Sign in</button>
+          </>
+            : <>
+              Signed in
+              Signed in as {session.user.email} <br />
+              <button onClick={() => signOut()}>Sign out</button>
+            </>}
+        </div>
 
       </div>
     </>
@@ -39,7 +54,7 @@ export const getStaticProps: GetStaticProps = async () => {
   let error: any
 
   try {
-    const res: any = await axios.get('http://localhost:5000/movies/popular')
+    const res = await axios.get('http://localhost:5000/movies/popular')
     movies = res.data.results
   } catch (error) {
     // gestion des erreurs?
