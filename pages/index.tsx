@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
 import axios from 'axios'
-import { getSession, signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/client'
+import Link from 'next/link'
 
 
 const Home = ({ movies }: any) => {
@@ -23,7 +24,11 @@ const Home = ({ movies }: any) => {
           <p className="font-semibold">Popular movies today</p>
           <div>
             {movies.map((movie: any) => (
-              <p key={movie.id}>{movie.title}</p>
+              <div key={movie.id} >
+                <Link href={`/movies/${movie.id}`}>
+                  <a>{movie.title}</a>
+                </Link>
+              </div>
             ))}
           </div>
         </main>
@@ -38,7 +43,7 @@ const Home = ({ movies }: any) => {
           </>
             : <>
               Signed in
-              Signed in as {session.user.email} <br />
+              Signed in as {session.user?.email} <br />
               <button onClick={() => signOut()}>Sign out</button>
             </>}
         </div>
