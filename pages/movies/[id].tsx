@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next'
 import axios from 'axios'
-import MovieType from '../../types/movieType'
+import MovieType from '../../types/MovieType'
+import PublicLayout from '../../components/layout/PublicLayout'
 
 interface AppProps {
   movie: MovieType
@@ -8,17 +9,13 @@ interface AppProps {
 
 const MoviePage = ({ movie }: AppProps) => {
 
-  // console.log(props)
-  // axios.get(`http://localhost:5000/movies/${params.id}`)
-  // .then(res => console.log(res.data.results))
-
   return (
-    <div>
+    <PublicLayout>
       <h1 className='font-bold text-4'>{movie.title}</h1>
 
       <p>{movie.overview}</p>
 
-    </div>
+    </PublicLayout>
   )
 }
 
